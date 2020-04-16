@@ -1,18 +1,41 @@
 module.exports = {
-  getPosts: (req, res) => {
-    //TODO Get all posts
+  getPosts: async (req, res) => {
+    const db = req.app.get('db')
+    const posts = await db.get_posts()
+
+    res.status(200).send(posts)
     
   },
-  addPost: (req, res) => {
-    //TODO Create new post
+  addPost: async (req, res) => {
+    const db = req.app.get('db')
+    const {users_id, content} = req.body
+
+    await db.add_post([users_id, content])
+
+    const posts = await db.get_posts()
+
+    res.status(200).send(posts)
   
   },
-  editPost: (req, res) => {
-    //TODO Edit existing post
+  editPost: async (req, res) => {
+   const db = req.app.get('db')
+   const {post_id} = req.params
+   const {content} = req.body
+
+   await db.edit_post([content, post_id])
+
+   const posts = await db.get_posts()
+
+   res.status(200).send(posts)
 
   },
-  deletePost: (req, res) => {
-    //TODO Delete existing post
+  deletePost: async (req, res) => {
+    const db = req.app.get('db')
+    const {post_id} = req.params
+
+    await db.delete_post([post_id])
    
+    const posts = await db.get_posts()
+    res.status(200).send(posts)
   }
 };
