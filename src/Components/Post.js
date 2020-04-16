@@ -6,11 +6,7 @@ const Post = (props) => {
   return (
     <li className="post-container">
       <div>
-        <p className="post-text">
-          {
-            //something goes here
-          }
-        </p>
+        <p className="post-text">{props.data.content}</p>
       </div>
       <div className="post-buttons">
         <button

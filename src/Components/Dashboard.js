@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import PostContainer from './PostContainer'
+import {connect} from 'react-redux'
+import {getUser} from '../ducks/reducer'
+import axios from 'axios'
+
 
 //TODO Write all methods, connect to store, connect methods to jsx.
 class Dashboard extends Component {
@@ -11,13 +15,38 @@ class Dashboard extends Component {
     }
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.getUser().then(() => {
+      axios.get('/api/posts').then(res => {
+        this.setState({
+          posts: res.data
+        })
+      })
+    }).catch(() => {
+      this.props.history.push('/')
+    })
+  }
 
-  getPosts = () => {}
+  handleChange = (e) => {
+    this.setState({
+      userInput: e.target.value
+    })
+  }
 
-  handleChange = (e) => {}
-
-  handleClick = () => {}
+  handleClick = () => {
+    const body = {
+      users_id: this.props.user.users_id,
+      content: this.state.userInput
+    }
+    if(body.content){
+      axios.post('/api/posts', body).then(res => {
+        this.setState({
+          posts: res.data,
+          userInput: ''
+        })
+      })
+    }
+  }
 
   handleEdit = () => {}
 
@@ -27,7 +56,9 @@ class Dashboard extends Component {
     const mappedPosts = this.state.posts.map((post, index) => {
       return (
         <PostContainer
-        //something goes here
+        data={post}
+        key={post.post_id}
+
         />
       )
     })
@@ -39,16 +70,14 @@ class Dashboard extends Component {
             cols="60"
             rows="2"
             placeholder="New post..."
-            value={() => {
-              //something goes here
-            }}
-            onChange={() => {
-              //something goes here
+            value={this.state.userInput}
+            onChange={(e) => {
+              this.handleChange(e)
             }}
           />
           <button
             onClick={() => {
-              //something goes here
+              this.handleClick()
             }}
             className="input-container-button"
           >
@@ -65,4 +94,6 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard
+const mapStateToProps = state => state
+
+export default connect(mapStateToProps, {getUser})(Dashboard)

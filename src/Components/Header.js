@@ -1,5 +1,6 @@
 //!No need to change anything in here
 import React from 'react'
+import {Link} from 'react-router-dom'
 //TODO Convert Dashboard & Profile to links
 
 const Header = () => {
@@ -7,8 +8,8 @@ const Header = () => {
     <nav className="nav-header">
       <h1>SOSMS</h1>
       <div className="nav-links">
-        <div>Dashboard</div>
-        <div>Profile</div>
+        <Link to='/dashboard' >Dashboard</Link>
+        <Link to='/profile' >Profile</Link>
       </div>
     </nav>
   )
