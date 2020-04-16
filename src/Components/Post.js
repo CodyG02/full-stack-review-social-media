@@ -12,7 +12,7 @@ const Post = (props) => {
         <button
           className="input-container-button-small"
           onClick={() => {
-            //something goes here
+            props.toggleEdit()
           }}
         >
           Edit
@@ -20,7 +20,7 @@ const Post = (props) => {
         <button
           className="input-container-button-small"
           onClick={() => {
-            //something goes here
+            props.handleDelete(props.data.post_id)
           }}
         >
           Delete

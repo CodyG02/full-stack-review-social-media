@@ -48,14 +48,28 @@ class Dashboard extends Component {
     }
   }
 
-  handleEdit = () => {}
+  handleEdit = (post_id, content) => {
+    axios.put(`/api/posts/${post_id}`, {content}).then(res => {
+      this.setState({
+        posts: res.data
+      })
+    })
+  }
 
-  handleDelete = () => {}
+  handleDelete = (post_id) => {
+    axios.delete( `/api/posts/${post_id}`).then(res => {
+      this.setState({
+        posts: res.data
+      })
+    })
+  }
 
   render() {
     const mappedPosts = this.state.posts.map((post, index) => {
       return (
         <PostContainer
+        handleEdit={this.handleEdit}
+        handleDelete={this.handleDelete}
         data={post}
         key={post.post_id}
 
